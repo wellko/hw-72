@@ -1,8 +1,8 @@
 import React from 'react';
 import {DishApi} from "../../types";
 import {imgStyle} from "../../constants";
-import {useAppDispatch} from "../../hooks";
-import {addDish} from "../../app/store/UserDishSlice";
+import {useAppDispatch, useAppSelector} from "../../hooks";
+import {addDish, RemoveDish, UserSelectDishes} from "../../app/store/UserDishSlice";
 
 interface Props {
 	Dish: DishApi
@@ -10,10 +10,16 @@ interface Props {
 
 const UserDishComponent: React.FC<Props> = ({Dish}) => {
 
+	const order = useAppSelector(UserSelectDishes).order;
+
 	const dispatch = useAppDispatch();
 
 	const onClick = () => {
 		dispatch(addDish(Dish.id));
+	}
+
+	const onClickMinus = () => {
+		dispatch(RemoveDish(Dish.id));
 	}
 
 	return (
@@ -25,7 +31,13 @@ const UserDishComponent: React.FC<Props> = ({Dish}) => {
 			</div>
 			<p className='m-auto'>Price: {Dish.price} KGS</p>
 			<div className='m-auto'>
-				<button type='button' className='btn btn-primary me-2' onClick={onClick}>Add to cart</button>
+				<p className='d-inline-block'>x {order[Dish.id] ? order[Dish.id] : '0'}</p>
+				<button type='button' style={{width: '40px', fontSize: '20px'}} className='btn btn-dark ms-2'
+						onClick={onClick}>+
+				</button>
+				<button disabled={order[Dish.id] < 1 || order[Dish.id] === undefined} type='button'
+						style={{width: '40px', fontSize: '20px'}} className='btn btn-dark ms-2' onClick={onClickMinus}>-
+				</button>
 			</div>
 		</div>
 	);

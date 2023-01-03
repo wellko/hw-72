@@ -22,6 +22,11 @@ const UserDishesSlice = createSlice(
 					state.order[dish] = 1;
 				}
 			},
+			RemoveDish: (state, {payload: dish}: PayloadAction<string>) => {
+				if (state.order[dish] >= 1) {
+					state.order[dish]--;
+				}
+			}
 		},
 		extraReducers: (builder) => {
 		}
@@ -30,4 +35,4 @@ const UserDishesSlice = createSlice(
 
 export const UserDishesReducer = UserDishesSlice.reducer;
 export const UserSelectDishes = (state: RootState) => state.order;
-export const {addDish} = UserDishesSlice.actions;
+export const {addDish, RemoveDish} = UserDishesSlice.actions;

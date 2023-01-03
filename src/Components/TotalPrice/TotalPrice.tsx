@@ -1,16 +1,22 @@
 import React from 'react';
 import {useAppSelector} from "../../hooks";
 import {UserSelectDishes} from "../../app/store/UserDishSlice";
+import {AdminSelectDishes} from "../../app/store/AdminDishSlice";
 
 const TotalPrice = () => {
 
-	const order = useAppSelector(UserSelectDishes);
+	const order = useAppSelector(UserSelectDishes).order;
 
-	return (
-		<div className='fixed-bottom bg-dark text-center'>
-			<p className='text-light'>0 KGS</p>
-		</div>
-	);
+	const dishes = useAppSelector(AdminSelectDishes).dishes;
+
+	let Total = 0;
+
+	Object.keys(order).map(key => {
+		const index = dishes.findIndex((value) => key === value.id);
+		Total += order[key] * parseInt(dishes[index].price);
+	})
+
+	return Total
 };
 
 export default TotalPrice;
