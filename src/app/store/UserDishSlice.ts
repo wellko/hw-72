@@ -1,13 +1,16 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import {Order} from "../../types";
 import {RootState} from "./store";
+import {MakeOrder} from "./UserDishThunks";
 
 interface State {
-	order: Order
+	order: Order;
+	makingOrder: boolean;
 }
 
 const initialState: State = {
 	order: {},
+	makingOrder: false,
 }
 
 const UserDishesSlice = createSlice(
@@ -23,12 +26,24 @@ const UserDishesSlice = createSlice(
 				}
 			},
 			RemoveDish: (state, {payload: dish}: PayloadAction<string>) => {
-				if (state.order[dish] >= 1) {
+				if (state.order[dish] === 1) {
+					delete state.order[dish];
+				}else {
 					state.order[dish]--;
 				}
 			}
 		},
 		extraReducers: (builder) => {
+			builder.addCase(MakeOrder.pending, (state) => {
+				state.makingOrder = true;
+			})
+			builder.addCase(MakeOrder.fulfilled, (state) => {
+				state.makingOrder = false;
+				state.order = {};
+			})
+			builder.addCase(MakeOrder.rejected, (state) => {
+				state.makingOrder = false;
+			})
 		}
 	}
 )
