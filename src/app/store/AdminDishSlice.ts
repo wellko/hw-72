@@ -1,7 +1,7 @@
 import {createSlice} from "@reduxjs/toolkit";
 import {DishApi, Order} from "../../types";
 import {RootState} from "./store";
-import {completeOrder, deleteDish, getDishes, getOrders, newDish} from "./AdminDishThunks";
+import {completeOrder, deleteDish, getDishes, getOneDish, getOrders, newDish} from "./AdminDishThunks";
 
 interface State {
 	dishes: DishApi[],
@@ -12,6 +12,7 @@ interface State {
 		deleting: boolean;
 		loadingOrders: boolean;
 	}
+	edited: DishApi,
 }
 
 const initialState: State = {
@@ -23,13 +24,20 @@ const initialState: State = {
 		deleting: false,
 		loadingOrders: false,
 	},
+	edited: {
+		title: '',
+		price: '',
+		image: '',
+		id: '',
+	},
 }
 
 const AdminDishesSlice = createSlice(
 	{
 		name: 'dishes',
 		initialState,
-		reducers: {},
+		reducers: {
+		},
 		extraReducers: (builder) => {
 			builder.addCase(getDishes.pending, (state) => {
 				state.status.loadingDishes = true;
@@ -77,6 +85,16 @@ const AdminDishesSlice = createSlice(
 			})
 			builder.addCase(completeOrder.rejected, (state) => {
 				state.status.deleting = false;
+			})
+			builder.addCase(getOneDish.pending, (state) => {
+				state.status.loadingDishes = true;
+			})
+			builder.addCase(getOneDish.fulfilled, (state, action) => {
+				state.edited = action.payload;
+				state.status.loadingDishes = false;
+			})
+			builder.addCase(getOneDish.rejected, (state) => {
+				state.status.loadingDishes = false;
 			})
 		}
 	}

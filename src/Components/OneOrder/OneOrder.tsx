@@ -18,7 +18,6 @@ const OneOrder: React.FC<Props> = ({props}) => {
 	const dispatch = useAppDispatch();
 
 
-
 	let Total = 0;
 
 	const dishes = useAppSelector(AdminSelectDishes).dishes;
@@ -30,10 +29,10 @@ const OneOrder: React.FC<Props> = ({props}) => {
 	}
 
 	const inner = Object.keys(props).map(key => {
-			if (key !== 'id') {
+			if (key !== 'id' && key !== 'customer') {
 				const index = dishes.findIndex((value) => key === value.id);
 				Total += props[key] * parseInt(dishes[index].price);
-				return <div className='row col-9'><p className='col-6'>{props[key]} x {dishes[index].title}</p>
+				return <div key={Math.random()} className='row col-9'><p className='col-6'>{props[key]} x {dishes[index].title}</p>
 					<p className='fw-bold col-6'>{props[key] * parseInt(dishes[index].price)} KGS </p></div>
 			}
 		}

@@ -43,3 +43,10 @@ export const completeOrder = createAsyncThunk<void, string>(
 	}
 )
 
+export const getOneDish = createAsyncThunk<DishApi, string>(
+	'dishes/One',
+	async (arg) => {
+		const response = await axiosApi.get('Delivery/Dishes/' + arg + '.json');
+		return response.data
+		})
+
