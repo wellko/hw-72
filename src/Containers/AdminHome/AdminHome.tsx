@@ -4,6 +4,7 @@ import {Link} from "react-router-dom";
 import {AdminSelectDishes} from "../../app/store/AdminDishSlice";
 import {useAppSelector} from "../../hooks";
 import AdminDishComponent from "../../Components/AdminDishComponent/AdminDishComponent";
+import Spinner from "../../Components/Spinner/Spinner";
 
 const AdminHome = () => {
 
@@ -16,10 +17,11 @@ const AdminHome = () => {
 				<div className='d-flex justify-content-between'>
 				<h2>Dishes</h2>
 				<Link className='btn btn-dark' to='/admin/new'>Add new dish</Link></div>
-			</div>
-			{
-				dishes.dishes.map(item => <AdminDishComponent key={Math.random()} Dish={item}/>)
+				{dishes.status.loadingDishes? <Spinner/> : dishes.dishes.map(item => <AdminDishComponent key={Math.random()} Dish={item}/>)
 			}
+			</div>
+
+
 		</>
 	);
 };

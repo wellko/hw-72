@@ -3,8 +3,12 @@ import {Dish} from "../../types";
 import {useAppDispatch} from "../../hooks";
 import {newDish} from "../../app/store/AdminDishThunks";
 import AdminNav from "../AdminNav/AdminNav";
+import {useNavigate} from "react-router-dom";
 
 const DishesForm = () => {
+
+	const navigate = useNavigate();
+
 	const dispatch = useAppDispatch();
 
 	const [dish, setDish] = useState<Dish>({
@@ -21,6 +25,7 @@ const DishesForm = () => {
 	const FormSend = (e: React.FormEvent) => {
 		e.preventDefault();
 		dispatch(newDish(dish));
+		navigate('/admin');
 	}
 
 	return (

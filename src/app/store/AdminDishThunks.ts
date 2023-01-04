@@ -19,3 +19,10 @@ export const getDishes = createAsyncThunk<DishApi[]>(
 	}
 )
 
+export const deleteDish = createAsyncThunk<void , string>(
+	'dishes/delete',
+	async (arg) => {
+		await axiosApi.delete('Delivery/Dishes/' + arg + '.json');
+	}
+)
+
