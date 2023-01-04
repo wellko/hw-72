@@ -3,9 +3,10 @@ import DishesForm from "./Components/DishesForm/DishesForm";
 import {Route, Routes} from "react-router-dom";
 import AdminHome from "./Containers/AdminHome/AdminHome";
 import {useAppDispatch, useAppSelector} from "./hooks";
-import {getDishes} from "./app/store/AdminDishThunks";
+import {getDishes, getOrders} from "./app/store/AdminDishThunks";
 import UserHome from "./Containers/UserHome/UserHome";
 import {AdminSelectDishes} from "./app/store/AdminDishSlice";
+import AdminOrders from "./Containers/AdminOrders/AdminOrders";
 
 function App() {
 
@@ -15,6 +16,7 @@ function App() {
 
 	useEffect(() => {
 		dispatch(getDishes());
+		dispatch(getOrders());
 	}, [state.deleting, state.posting])
 
 	return (
@@ -24,6 +26,7 @@ function App() {
 				<Route path='/admin/new' element={<DishesForm/>}/>
 				<Route path='/' element={<UserHome/>}/>
 				<Route path='admin/:id/edit' element={<DishesForm/>}/>
+				<Route path='/admin/Orders' element={<AdminOrders/>}/>
 			</Routes>
 		</div>
 	);

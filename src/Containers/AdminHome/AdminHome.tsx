@@ -1,14 +1,22 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import AdminNav from "../../Components/AdminNav/AdminNav";
 import {Link} from "react-router-dom";
 import {AdminSelectDishes} from "../../app/store/AdminDishSlice";
-import {useAppSelector} from "../../hooks";
+import {useAppDispatch, useAppSelector} from "../../hooks";
 import AdminDishComponent from "../../Components/AdminDishComponent/AdminDishComponent";
 import Spinner from "../../Components/Spinner/Spinner";
+import {getDishes, getOrders} from "../../app/store/AdminDishThunks";
 
 const AdminHome = () => {
 
+	const dispatch = useAppDispatch();
+
 	const dishes = useAppSelector(AdminSelectDishes);
+
+	useEffect(() => {
+		dispatch(getDishes());
+		dispatch(getOrders());
+	}, [])
 
 	return (
 		<>

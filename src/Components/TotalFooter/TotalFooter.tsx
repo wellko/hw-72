@@ -20,7 +20,7 @@ const TotalFooter = () => {
 	return (
 	<div className='fixed-bottom bg-dark text-center'>
 		<p className='text-light'>{TotalPrice()} KGS</p>
-		<button disabled={orderPreloader} onClick={onClick}> {orderPreloader? <ButtonSpinner/> : 'Make Order'}</button>
+		<button disabled={orderPreloader} onClick={onClick}> {orderPreloader? <ButtonSpinner/> : 'Make OneOrder'}</button>
 	</div>
 	);
 };

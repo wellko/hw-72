@@ -10,4 +10,5 @@ export interface DishApi extends Dish{
 
 export interface Order {
 	[key:string]: number,
+	id?: string,
 }
