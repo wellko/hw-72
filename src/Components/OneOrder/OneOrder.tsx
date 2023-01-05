@@ -38,6 +38,9 @@ const OneOrder: React.FC<Props> = ({props, customer, id}) => {
     const inner = Object.keys(props).map(key => {
             if (key !== 'id' && key !== 'customer') {
                 const index = dishes.findIndex((value) => key === value.id);
+                if(index === -1) {
+                    return <p key={Math.random()}>Deleted position</p>
+                }
                 Total += props[key] * parseInt(dishes[index].price);
                 return <div key={Math.random()} className='row col-12'><p
                     className='col-4'>{props[key]} x {dishes[index].title}</p>
@@ -50,6 +53,10 @@ const OneOrder: React.FC<Props> = ({props, customer, id}) => {
             }
         }
     );
+
+    if (Total === 0) {
+        onComplete();
+    }
 
     return (
         <div className='row border border-2 border-dark mt-2 overflow-hidden'>
