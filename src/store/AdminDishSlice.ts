@@ -1,11 +1,19 @@
 import {createSlice} from "@reduxjs/toolkit";
-import {DishApi, Order} from "../../types";
-import {RootState} from "./store";
-import {completeOrder, deleteDish, getDishes, getOneDish, getOrders, newDish} from "./AdminDishThunks";
+import {DishApi, Orders} from "../types";
+import {RootState} from "../app/store";
+import {
+	completeOrder,
+	deleteDish,
+	EditingDish,
+	getDishes,
+	getOneDish,
+	getOrders,
+	newDish
+} from "./AdminDishThunks";
 
 interface State {
 	dishes: DishApi[],
-	orders: Order[],
+	orders: Orders[],
 	status: {
 		loadingDishes: boolean;
 		posting: boolean;
@@ -76,6 +84,7 @@ const AdminDishesSlice = createSlice(
 			})
 			builder.addCase(getOrders.rejected, (state) => {
 				state.status.loadingOrders = false;
+				state.orders = [];
 			})
 			builder.addCase(completeOrder.pending, (state) => {
 				state.status.deleting = true;
@@ -96,6 +105,16 @@ const AdminDishesSlice = createSlice(
 			builder.addCase(getOneDish.rejected, (state) => {
 				state.status.loadingDishes = false;
 			})
+			builder.addCase(EditingDish.pending, (state) => {
+				state.status.posting = true;
+			})
+			builder.addCase(EditingDish.fulfilled, (state) => {
+				state.status.posting = false;
+			})
+			builder.addCase(EditingDish.rejected, (state) => {
+				state.status.posting = false;
+			})
+
 		}
 	}
 )

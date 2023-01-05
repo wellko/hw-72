@@ -1,18 +1,20 @@
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {CustomerInfo, Order} from "../../types";
-import {RootState} from "./store";
+import { Order} from "../types";
+import {RootState} from "../app/store";
 import {MakeOrder} from "./UserDishThunks";
 
 interface State {
 	order: Order;
 	makingOrder: boolean;
 	modal: boolean;
+	formFilled: boolean;
 }
 
 const initialState: State = {
 	order: {},
 	makingOrder: false,
-	modal: true,
+	modal: false,
+	formFilled: false
 }
 
 const UserDishesSlice = createSlice(
@@ -34,15 +36,15 @@ const UserDishesSlice = createSlice(
 					state.order[dish]--;
 				}
 			},
+			DeleteDish: (state, {payload:dish}:PayloadAction<string> )=>{
+				delete state.order[dish];
+			},
 			closeModal: (state) => {
 				state.modal = false;
 			},
 			openModal: (state) => {
 				state.modal = true;
 			},
-			ChangeCustomerInfo: (state, {payload: customer}: PayloadAction<CustomerInfo>)=> {
-				state.order.customer = customer;
-			}
 		},
 		extraReducers: (builder) => {
 			builder.addCase(MakeOrder.pending, (state) => {
@@ -61,4 +63,4 @@ const UserDishesSlice = createSlice(
 
 export const UserDishesReducer = UserDishesSlice.reducer;
 export const UserSelectDishes = (state: RootState) => state.order;
-export const {addDish, RemoveDish, closeModal, openModal,ChangeCustomerInfo} = UserDishesSlice.actions;
+export const {addDish, RemoveDish, closeModal, openModal, DeleteDish} = UserDishesSlice.actions;

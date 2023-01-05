@@ -1,36 +1,35 @@
 import React, {useEffect} from 'react';
-import AdminNav from "../../Components/AdminNav/AdminNav";
-import {useAppDispatch, useAppSelector} from "../../hooks";
-import {AdminSelectDishes} from "../../app/store/AdminDishSlice";
+import {useAppDispatch, useAppSelector} from "../../app/hooks";
+import {AdminSelectDishes} from "../../store/AdminDishSlice";
 import OneOrder from "../../Components/OneOrder/OneOrder";
-import {getDishes, getOrders} from "../../app/store/AdminDishThunks";
+import {getDishes, getOrders} from "../../store/AdminDishThunks";
 import Spinner from "../../Components/Spinner/Spinner";
 
 const AdminOrders = () => {
 
-	const dispatch = useAppDispatch();
+    const dispatch = useAppDispatch();
 
-	const status = useAppSelector(AdminSelectDishes).status;
+    const status = useAppSelector(AdminSelectDishes).status;
 
-	const order = useAppSelector(AdminSelectDishes).orders;
+    const order = useAppSelector(AdminSelectDishes).orders;
 
-	useEffect(() => {
-		dispatch(getDishes());
-		dispatch(getOrders());
-	}, [])
+    console.log(order)
 
-	return (
-		<>
-			<AdminNav/>
+    useEffect(() => {
+        dispatch(getDishes());
+        dispatch(getOrders());
+    }, [dispatch])
 
-			<div className='container'>
-				{status.loadingDishes? <Spinner/> : order.map((item) => {
-						return <OneOrder key={Math.random()} props={item}/>
-					})}
-
-			</div>
-		</>
-	);
+    return (
+        <>
+            <div className='container'>
+                {order.length < 1 ? <h1>There is no orders yet</h1> : status.loadingDishes ?
+                    <Spinner/> : order.map((item) => {
+                        return <OneOrder key={Math.random()} props={item.dishes} customer={item.customer} id={item.id!}/>
+                    })}
+            </div>
+        </>
+    );
 };
 
 export default AdminOrders;

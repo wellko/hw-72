@@ -11,11 +11,16 @@ export interface DishApi extends Dish{
 export interface Order {
 	[key:string]: number;
 	id?: string;
-	customer?: CustomerInfo;
 }
 
 export interface CustomerInfo {
-	address? : string;
-	name? : string;
-	phone? : string;
+	address : string;
+	name : string;
+	phone : string;
+}
+
+export interface Orders {
+	dishes: Order;
+	customer: CustomerInfo;
+	id? : string;
 }

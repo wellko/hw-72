@@ -1,24 +1,24 @@
-import React from 'react';
-import {useAppSelector} from "../../hooks";
-import {UserSelectDishes} from "../../app/store/UserDishSlice";
-import {AdminSelectDishes} from "../../app/store/AdminDishSlice";
+import {useAppSelector} from "../../app/hooks";
+import {UserSelectDishes} from "../../store/UserDishSlice";
+import {AdminSelectDishes} from "../../store/AdminDishSlice";
 
 const TotalPrice = () => {
 
-	const order = useAppSelector(UserSelectDishes).order;
+    const order = useAppSelector(UserSelectDishes).order;
 
-	const dishes = useAppSelector(AdminSelectDishes).dishes;
+    const dishes = useAppSelector(AdminSelectDishes).dishes;
 
-	let Total = 0;
+    let Total = 0;
 
-	Object.keys(order).map(key => {
-		if(key !== 'customer'){
-			const index = dishes.findIndex((value) => key === value.id);
-			Total += order[key] * parseInt(dishes[index].price);
-		}
-	})
+    if(order){
+        Object.keys(order).map(key => {
+            const index = dishes.findIndex((value) => key === value.id);
+            return Total += order[key] * parseInt(dishes[index].price);
+        })
+        return Total;
+    }
+    }
 
-	return Total
-};
+
 
 export default TotalPrice;

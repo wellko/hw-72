@@ -1,6 +1,6 @@
 import {createAsyncThunk} from "@reduxjs/toolkit";
-import {Dish, DishApi, Order} from "../../types";
-import axiosApi from "../../axios-api";
+import {Dish, DishApi, Orders} from "../types";
+import axiosApi from "../axios-api";
 
 export const newDish = createAsyncThunk<void, Dish>(
 	'dishes/addNew',
@@ -26,7 +26,7 @@ export const deleteDish = createAsyncThunk<void , string>(
 	}
 )
 
-export const getOrders = createAsyncThunk<Order[]>(
+export const getOrders = createAsyncThunk<Orders[]>(
 	'dishes/orders',
 	async () => {
 		const response = await axiosApi.get('Delivery/orders.json');
@@ -49,4 +49,16 @@ export const getOneDish = createAsyncThunk<DishApi, string>(
 		const response = await axiosApi.get('Delivery/Dishes/' + arg + '.json');
 		return response.data
 		})
+
+interface EditDishParams {
+	id: string;
+	dish: Dish;
+}
+
+export const EditingDish = createAsyncThunk<void, EditDishParams>(
+	'dishes/edit',
+	async (arg) => {
+		await axiosApi.put ('Delivery/Dishes/' + arg.id + '.json', arg.dish);
+	}
+)
 
